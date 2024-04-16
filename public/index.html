@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/socket.io/socket.io.js">
+    </script>
+</head>
+<body>
+    
+    
+    <ul id="messages">
+
+    </ul>
+    <form action="" id="form">
+        <input type="text" id="inputData" autocomplete="off">
+        <button >send</button>
+    </form>
+
+    <script>
+        const socket=io();
+        setTimeout(() => {
+            console.log(socket.id);
+        }, 2000);
+        
+        const form=document.getElementById("form");
+        const input=document.getElementById("inputData");
+
+        form.addEventListener("submit",e=>{
+            e.preventDefault();
+            if(input.value){
+                socket.emit('send_message',input.value);
+                input.value='';
+            }
+        })
+
+        socket.on('send_message',(msg)=>{
+            const item=document.createElement('li');
+            item.textContent=msg;
+            document.getElementById('messages').appendChild(item);
+        })
+        
+
+        //socket.disconnect();
+    </script>
+    
+</body>
+</html>
